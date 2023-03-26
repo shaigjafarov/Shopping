@@ -9,8 +9,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     Card findCardById(Long id);
 
-    List<Card> findByCvvAndAndExpDate(String sdjhb, LocalDate exp);
+    List<Card> findByCvvAndExpDate(String sdjhb, LocalDate exp);
 
-    @Override
-     <S extends Card> S save(S entity);
+
+
+
+
 }
