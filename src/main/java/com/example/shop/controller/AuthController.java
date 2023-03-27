@@ -1,6 +1,6 @@
 package com.example.shop.controller;
 
-import com.example.shop.config.JwtTokenProvider;
+import com.example.shop.config.JwtUtils;
 import com.example.shop.dto.LoginRequestDTO;
 import com.example.shop.entity.User;
 import com.example.shop.repository.UserRepository;
@@ -29,7 +29,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -42,7 +42,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-            String token = jwtTokenProvider.generateToken(userDetails);
+            String token = jwtUtils.generateJwtToken(userDetails);
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
