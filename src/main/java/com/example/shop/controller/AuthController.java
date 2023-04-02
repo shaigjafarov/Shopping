@@ -10,6 +10,7 @@ import com.example.shop.entity.User;
 import com.example.shop.repository.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,7 +65,7 @@ public class AuthController {
     JSONPlaceHolderClient jsonPlaceHolderClient;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
@@ -88,7 +90,7 @@ public class AuthController {
 
 
     @GetMapping("/getir")
-    public CarDTO login(@RequestHeader(value = "Authorization") String authorizationHeader) {
+    public CarDTO login(@RequestHeader(value = "Authorization" ) String authorizationHeader) {
 
 //        CarDTO posts = jsonPlaceHolderClient.getPosts(authorizationHeader);
 
