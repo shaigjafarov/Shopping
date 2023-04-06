@@ -8,6 +8,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,24 +30,35 @@ public class CardServiceImpl implements CardService {
 //    }
 
     @Override
-    public List<CardDTO> getListCardDTO() {
-        List<CardDTO> cardDTOList = new ArrayList<>();
+//    @Cacheable("cardDtoList")
 
-        cardDTOList.add(CardDTO.builder()
-                .expDate(LocalDate.now().plusDays(1L))
-                .cardNum("123456789012345")
-                .holderName("EXP 1313-HJBds")
-                .build());
-        return cardDTOList;
+//    @CacheEvict(allEntries = true, value = "cardDtoList")
+//    @Scheduled(fixedDelay = 10* 1000 ,  initialDelay = 500)
+//    @CacheEvict(value = "cardDtoList", allEntries = true)
+//    @Scheduled(fixedDelay = 10000)
+    public List<CardDTO> getListCardDTO() {
+        return cardRepository.findCardDTOList();
+    }
+
+
+    @Override
+    @CacheEvict(value = "getListCard", allEntries = true)
+    public String saveCardDTO(CardDTO cardDTO) {
+        Card pensiya_karti = Card.builder().expDate(LocalDate.now().plusYears(3))
+                .cardNumber(cardDTO.getCardNum())
+                .holderName(cardDTO.getHolderName())
+                .build();
+        cardRepository.save(pensiya_karti);
+
+
+
+        return "Success";
     }
 
     @Override
-    public String saveCardDTO(CardDTO cardDTO) {
-        Card pensiya_karti = Card.builder().expDate(LocalDate.now().plusYears(3))
-                .cvv("342")
-                .holderName("Pensiya Karti")
-                .build();
-        cardRepository.save(pensiya_karti);
-        return "Success";
+    @Cacheable(value = "getListCard" )
+    public Page<Card> getListCard(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("holderName").descending().and(Sort.by("expDate").ascending()));
+        return cardRepository.findAll(pageable);
     }
 }

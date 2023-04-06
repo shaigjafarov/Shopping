@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckBalance {
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
-    @Autowired
-    Messaging messaging;
-
-    @Scheduled(cron = "*/10 * * * * ?")
-    void dailyCheck() {
-        System.out.println("Isleyir");
-       messaging.sendEmail("sahilnecefov123@gmail.com", "Dogrulama", "12347");
-    }
+//    @Autowired
+//    Messaging messaging;
+//
+//    @Scheduled(cron = "*/10 * * * * ?")
+//    void dailyCheck() {
+//        System.out.println("Isleyir");
+//       messaging.sendEmail("sahilnecefov123@gmail.com", "Dogrulama", "12347");
+//    }
 }

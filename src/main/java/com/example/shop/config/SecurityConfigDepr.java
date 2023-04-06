@@ -31,9 +31,9 @@ public class SecurityConfigDepr extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
 //                .addFilterBefore(publicUrlFilter, AuthTokenFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/car")
-//                .permitAll()
-//                .anyRequest()
+                .antMatchers("/card/**")
+                .permitAll()
+                .anyRequest()
                 .authenticated();
 
     }

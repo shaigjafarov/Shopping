@@ -63,7 +63,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         System.out.println(request.getServletPath());
-        return List.of("/api/getir","/api/login" ).stream().anyMatch(p -> p.equals(request.getServletPath()));
+        return List.of("/api/getir","/api/login", "/card/cards","/card/page","/card/save" ).stream().anyMatch(p -> p.equals(request.getServletPath()));
     }
 
 }

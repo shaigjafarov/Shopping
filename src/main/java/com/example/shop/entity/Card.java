@@ -34,6 +34,8 @@ public class Card {
 
     String cvv;
 
+    String cardNumber;
+
     public Card() {
 
     }
